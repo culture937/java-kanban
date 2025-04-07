@@ -26,7 +26,7 @@ public class Epic extends Task {
         boolean is_new = true;
         boolean is_done = true;
         if(subtaskIds.size() == 0){
-            this.setStatus(Status.DONE);
+            this.setStatus(Status.NEW);
         }
         for(int id : subtaskIds){
             if(getStatus() == Status.IN_PROGRESS){
