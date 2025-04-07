@@ -1,4 +1,7 @@
+package TaskManager;
+
 import Tasks.Epic;
+import Tasks.Status;
 import Tasks.Subtask;
 import Tasks.Task;
 
@@ -39,20 +42,30 @@ class TaskManager{
             epic.getSubtaskIds().clear();
         }
         epics.clear();
+        subtasks.clear();
     }
 
     public void clearSubTasks(){
         for(Epic epic : epics.values()){
             epic.getSubtaskIds().clear();
+            epic.updateStatus(subtasks);
         }
         subtasks.clear();
     }
 
-    //  ТЗ:
-    //получение списка задач
-    //получение списка подзадач
-    //получение списка эпиков
-    //start
+
+    public Map<Integer, Task> getTasks(){
+        return tasks;
+    }
+
+    public Map<Integer, Epic> getEpics(){
+        return epics;
+    }
+
+    public Map<Integer, Subtask> getSubtasks(){
+        return subtasks;
+    }
+
     public Task getTask(int id){
         return tasks.get(id);
     }
@@ -65,7 +78,6 @@ class TaskManager{
         return subtasks.get(id);
     }
 
-    //end
 
     public void add(Epic epic){
         epics.put(cur_id, epic);
@@ -77,9 +89,11 @@ class TaskManager{
         ++cur_id;
     }
 
+
     public void add(Subtask subtask){
         subtasks.put(cur_id, subtask);
         epics.get(subtask.getEpicId()).addSubtask(cur_id);
+        epics.get(subtask.getEpicId()).updateStatus(subtasks);
         ++cur_id;
     }
 
@@ -89,6 +103,7 @@ class TaskManager{
 
     public void update(Subtask subtask){
         subtasks.put(subtask.getEpicId(), subtask);
+        epics.get(subtask.getEpicId()).updateStatus(subtasks);
     }
 
     public void update(Task task){
@@ -106,6 +121,7 @@ class TaskManager{
                     epic.getSubtaskIds().remove(i);
                 }
             }
+            epic.updateStatus(subtasks);
         }
         subtasks.remove(id);
     }
@@ -118,8 +134,8 @@ class TaskManager{
     public ArrayList<Subtask> getEpicsSubtasks(int id){
         ArrayList<Integer> ids = epics.get(id).getSubtaskIds();
         ArrayList<Subtask> sub = new ArrayList<Subtask>();
-        for(int i = 0; i < ids.size(); ++i){
-            sub.add(subtasks.get(ids.get(i)));
+        for (Integer subtaskId : epics.get(id).getSubtaskIds()) {
+            sub.add(subtasks.get(subtaskId));
         }
         return sub;
     }
@@ -134,10 +150,12 @@ class TaskManager{
         ++cur_id;
     }
 
-    //smotri kak mogu
+
     public void createSubtaskTask(String title, String description, int id){
         subtasks.put(cur_id, new Subtask(title, description, cur_id));
         epics.get(id).addSubtask(cur_id);
         ++cur_id;
     }
+
+
 }
