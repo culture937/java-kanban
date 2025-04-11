@@ -54,16 +54,18 @@ class TaskManager{
     }
 
 
-    public Map<Integer, Task> getTasks(){
-        return tasks;
+
+
+    public ArrayList<Task> getTasks() {
+        return new ArrayList<>(tasks.values());
     }
 
-    public Map<Integer, Epic> getEpics(){
-        return epics;
+    public ArrayList<Epic> getEpics(){
+        return new ArrayList<>(epics.values());
     }
 
-    public Map<Integer, Subtask> getSubtasks(){
-        return subtasks;
+    public ArrayList<Subtask> getSubtasks(){
+        return new ArrayList<>(subtasks.values());
     }
 
     public Task getTask(int id){

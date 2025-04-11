@@ -1,6 +1,6 @@
 package Tasks;
 
-public class Subtask extends Task {
+public class Subtask extends BaseTask {
     private int epicId;
 
     public Subtask(String title, String description, int epicId) {
@@ -10,5 +10,9 @@ public class Subtask extends Task {
 
     public int getEpicId() {
         return epicId;
+    }
+
+    public void setStatus(Status status) {
+        this.status = status;
     }
 }

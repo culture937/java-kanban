@@ -3,8 +3,7 @@ package Tasks;
 import java.util.ArrayList;
 import java.util.Map;
 
-public class Epic extends Task {
-    //bez public setStatus ne mogu obnovit status epica v task managare
+public class Epic extends BaseTask {
     private ArrayList<Integer> subtaskIds = new ArrayList<>();
     public Epic(String title, String description, int id) {
         super(title, description, id);
@@ -23,25 +22,33 @@ public class Epic extends Task {
     }
 
     public void updateStatus(Map<Integer, Subtask> subtasks) {
-        boolean is_new = true;
-        boolean is_done = true;
-        if(subtaskIds.size() == 0){
+        if (subtaskIds.isEmpty()) {
             this.setStatus(Status.NEW);
+            return;
         }
-        for(int id : subtaskIds){
-            if(getStatus() == Status.IN_PROGRESS){
-                this.setStatus(Status.IN_PROGRESS);
-                return;
-            }else if(subtasks.get(id).getStatus() == Status.NEW){
-                is_done = false;
-            }else if(subtasks.get(id).getStatus() == Status.DONE){
-                is_new = false;
+
+        boolean allNew = true;
+        boolean allDone = true;
+
+        for (int id : subtaskIds) {
+            Status status = subtasks.get(id).getStatus();
+
+            if (status != Status.NEW) {
+                allNew = false;
+            }
+            if (status != Status.DONE) {
+                allDone = false;
             }
         }
-        if(is_new){
+
+        if (allNew) {
             this.setStatus(Status.NEW);
-        }else if(is_done){
+        } else if (allDone) {
             this.setStatus(Status.DONE);
+        } else {
+            this.setStatus(Status.IN_PROGRESS);
         }
     }
+
+
 }
